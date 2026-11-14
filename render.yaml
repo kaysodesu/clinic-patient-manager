@@ -1,0 +1,23 @@
+# Render Blueprint: in Render choose New -> Blueprint and select this repository.
+# Render asks for the values marked "sync: false"; SESSION_SECRET is generated for you.
+services:
+  - type: web
+    name: clinic-patient-manager
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # Postgres connection string (e.g. from Neon) - required so records and accounts persist
+      - key: DATABASE_URL
+        sync: false
+      # Signs staff sessions; keep it secret and stable so people stay signed in across deploys
+      - key: SESSION_SECRET
+        generateValue: true
+      # Optional: enables the AI Code & Prompt Auditor
+      - key: GEMINI_API_KEY
+        sync: false
