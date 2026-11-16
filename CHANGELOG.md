@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.1.0 (2026-11-16)
+
+Cleaner, faster layout for busy clinicians.
+
+### Changed
+- **One navigation menu** built from `src/config/navigation.ts`, grouped into Patient care, Patient access, Front office and Admin & IT. The desktop sidebar and mobile menu can no longer drift apart.
+- **Plain section names:** Patients, Visits & notes, Prescriptions, Messages & summaries, New patient intake, Patient portal, Patient profile, Outreach & feedback, IT support, Diagnosis reference, Code & prompt auditor.
+- **"Marketing Hub" and "Feedback Hub" merged** into one *Outreach & feedback* item (they opened the same screen).
+- **One page header style:** the top bar now shows every page's title and a one-line description (two pages had none). The large duplicate banners on Visits & notes, Messages & summaries, Outreach, IT support, Diagnosis reference and the code auditor were replaced with slim toolbars.
+- **New shared components:** `PatientSwitcher` and `SubTabs` in `src/components/ui/`.
+- **Patients first:** the ID and wristband scanner is folded into a one-line "Scan an ID or wristband" bar (it remembers whether you left it open).
+- **Diagnosis reference:** condition cards show a summary with a "Show medications, warnings & after-care" toggle. The page went from about 4,000px tall to about 1,500px.
+- **Plain-language headings and buttons** throughout. For example, "Formulate Encounter Report" became *Encounter note & coding*, "Commit Visitation Report to Patient Dossier" became *Save visit & close*, and "Register to Ledger & Issue Copay" became *Register patient*.
+- Removed the decorative "Diagnostic clock" and the hard-coded "Server status: Active" footer. The sidebar now stays in place while the page scrolls.
+
+### Fixed
+- **Blank page in development** after running `npm run build:demo`: Vite scanned the `dist-demo/` output as source and failed. Dependency scanning is now limited to the real app.
+- **Mobile menu couldn't scroll** to the last items on short phones.
+- **Tall sidebar** could push items off-screen on small laptop displays.
+
 ## 1.0.2 (2026-11-14)
 - Sample phone numbers (pharmacies, intake demo, scanner cards) are now fictional 555-01xx numbers that can't reach real businesses or people
 

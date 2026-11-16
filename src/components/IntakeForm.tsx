@@ -283,7 +283,7 @@ export default function IntakeForm({ onAddPatient, onCancel, initialData }: Inta
         <div>
           <div className="flex items-center gap-2">
             <Heart className="w-5 h-5 text-teal-400 stroke-[2.5]" />
-            <h2 className="text-xl font-bold tracking-tight">Patient Ingress & Intake Processing</h2>
+            <h2 className="text-xl font-bold tracking-tight">Intake form</h2>
           </div>
           <p className="text-xs text-slate-300 mt-1">Complete intake questionnaires and insurance profile to process clinical admission.</p>
         </div>
@@ -370,7 +370,7 @@ export default function IntakeForm({ onAddPatient, onCancel, initialData }: Inta
             <div>
               <div className="border-b border-slate-100 pb-2 mb-4">
                 <span className="text-xs font-semibold uppercase tracking-wider text-teal-600">Patient Directory Core</span>
-                <h3 className="text-base font-bold text-slate-900 mt-0.5">Personal Identification Dossier</h3>
+                <h3 className="text-base font-bold text-slate-900 mt-0.5">Personal details</h3>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
@@ -493,7 +493,7 @@ export default function IntakeForm({ onAddPatient, onCancel, initialData }: Inta
             <div>
               <div className="border-b border-slate-100 pb-2 mb-4">
                 <span className="text-xs font-semibold uppercase tracking-wider text-teal-600">Demographic Context</span>
-                <h3 className="text-base font-bold text-slate-900 mt-0.5">Professional & Employment Context</h3>
+                <h3 className="text-base font-bold text-slate-900 mt-0.5">Employment</h3>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
@@ -551,7 +551,7 @@ export default function IntakeForm({ onAddPatient, onCancel, initialData }: Inta
             <div>
               <div className="border-b border-slate-100 pb-2 mb-4">
                 <span className="text-xs font-semibold uppercase tracking-wider text-rose-650">Safety Framework</span>
-                <h3 className="text-base font-bold text-slate-900 mt-0.5">Emergency Liaison Contact Details <span className="text-rose-500">*</span></h3>
+                <h3 className="text-base font-bold text-slate-900 mt-0.5">Emergency contact <span className="text-rose-500">*</span></h3>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="md:col-span-2">
@@ -596,7 +596,7 @@ export default function IntakeForm({ onAddPatient, onCancel, initialData }: Inta
                 onClick={() => setActiveTab('medical')}
                 className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-sm font-semibold transition-all shadow-xs cursor-pointer"
               >
-                Proceed to Medical History
+                Next: medical history
               </button>
             </div>
           </div>
@@ -714,7 +714,7 @@ export default function IntakeForm({ onAddPatient, onCancel, initialData }: Inta
             <div>
               <div className="border-b border-slate-100 pb-2 mb-4">
                 <span className="text-xs font-semibold uppercase tracking-wider text-teal-600 font-medium">Genealogical Predispositions</span>
-                <h3 className="text-base font-bold text-slate-900 mt-0.5">Hereditary Family Medical Context</h3>
+                <h3 className="text-base font-bold text-slate-900 mt-0.5">Family history</h3>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                 {commonFamilyHistList.map((hist) => {
@@ -790,7 +790,7 @@ export default function IntakeForm({ onAddPatient, onCancel, initialData }: Inta
                 onClick={() => setActiveTab('visit')}
                 className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-sm font-semibold transition-all shadow-xs cursor-pointer"
               >
-                Proceed to Symptoms & Current Visit
+                Next: symptoms
               </button>
             </div>
           </div>
@@ -903,7 +903,7 @@ export default function IntakeForm({ onAddPatient, onCancel, initialData }: Inta
                 onClick={() => setActiveTab('insurance')}
                 className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-sm font-semibold transition-all shadow-xs cursor-pointer"
               >
-                Proceed to Financial Insurance Billing
+                Next: insurance & billing
               </button>
             </div>
           </div>
@@ -1028,7 +1028,7 @@ export default function IntakeForm({ onAddPatient, onCancel, initialData }: Inta
                 className="px-6 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-sm font-bold transition-all shadow-sm flex items-center gap-2 cursor-pointer"
               >
                 <Plus className="w-4 h-4 stroke-[2.5]" />
-                Register to Ledger & Issue Copay
+                Register patient
               </button>
             </div>
           </div>

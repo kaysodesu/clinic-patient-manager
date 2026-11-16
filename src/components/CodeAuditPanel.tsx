@@ -269,48 +269,17 @@ export default function CodeAuditPanel({ onLogITEvent, playBeep }: CodeAuditPane
   return (
     <div className="space-y-6 font-sans">
       
-      {/* HEADER BANNER */}
-      <div className="bg-slate-950 text-white rounded-3xl p-6 border border-slate-800 shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-400 text-[10px] uppercase font-mono font-bold tracking-wider mb-2">
-              <Cpu className="w-3.5 h-3.5 animate-pulse text-teal-400" />
-              <span>Gemini AI System Instruction Inspector</span>
-            </div>
-            <h1 className="text-xl font-black tracking-tight flex items-center gap-2 text-white">
-              <span>Code & Architecture Audit Breakdown</span>
-              <span className="bg-teal-500 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded font-mono">
-                GEMINI 3.6 FLASH
-              </span>
-            </h1>
-            <p className="text-xs text-slate-400 mt-1 max-w-2xl leading-relaxed">
-              Configure system instructions to instruct Gemini to act as a strict Senior Software Architect, Security & HIPAA Auditor, or UX Critic. Feed app code or prompt structures into the model for a detailed, surgical breakdown report.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handleRunAudit}
-              disabled={isLoading}
-              className="px-5 py-3 bg-teal-500 hover:bg-teal-400 text-slate-950 font-black text-xs rounded-2xl flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-teal-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? (
-                <>
-                  <RefreshCw className="w-4 h-4 animate-spin text-slate-950" />
-                  <span>Auditing System Code...</span>
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-4 h-4 text-slate-950" />
-                  <span>Run Architectural Breakdown</span>
-                </>
-              )}
-            </button>
-          </div>
-        </div>
+      {/* Page action */}
+      <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 flex flex-wrap items-center gap-3">
+        <p className="text-xs text-slate-600 flex-1 min-w-[200px]">Pick a reviewer, paste code or a prompt, then run the review. Uses the AI key set in Setup &amp; integrations.</p>
+        <button
+          type="button"
+          onClick={handleRunAudit}
+          disabled={isLoading}
+          className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs rounded-lg flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isLoading ? <><RefreshCw className="w-4 h-4 animate-spin" /> Reviewing…</> : <><Sparkles className="w-4 h-4" /> Run review</>}
+        </button>
       </div>
 
       {/* STEP 1: PERSONA SELECTOR */}

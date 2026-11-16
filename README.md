@@ -108,7 +108,7 @@ docs/                     Test scenarios, security and HIPAA notes
 
 ## Test data
 
-On **Patient Records Database**, **Load Test Patients** adds five fictional scenarios (annual physical, chronic care, pediatric strep, telehealth follow-up, Medicare wellness visit). See [docs/TEST-SCENARIOS.md](docs/TEST-SCENARIOS.md).
+On **Patients**, **Load Test Patients** adds five fictional scenarios (annual physical, chronic care, pediatric strep, telehealth follow-up, Medicare wellness visit). See [docs/TEST-SCENARIOS.md](docs/TEST-SCENARIOS.md).
 
 ## Roadmap ideas
 

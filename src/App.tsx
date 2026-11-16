@@ -27,11 +27,13 @@ import { AccountPanel } from './auth/AccountPanel';
 import { StaffManager } from './auth/StaffManager';
 import { IntegrationsPanel, fetchIntegrationStatus } from './auth/IntegrationsPanel';
 import { AppSection } from './data/tutorialContent';
+import NavMenu from './components/NavMenu';
+import { viewMeta, ViewId } from './config/navigation';
 
 const DEMO_MODE = import.meta.env.VITE_DEMO_MODE === 'true';
 import { 
   Heart, Users, ClipboardList, CreditCard, ChevronRight, Menu, X, 
-  HelpCircle, Settings, Bell, Clock, CalendarDays, KeyRound, CheckSquare, ShieldCheck, Stethoscope, Activity, MessageSquare, Terminal, Database
+  HelpCircle, Settings, Bell, ScanLine, Clock, CalendarDays, KeyRound, CheckSquare, ShieldCheck, Stethoscope, Activity, MessageSquare, Terminal, Database
 } from 'lucide-react';
 
 export default function App() {
@@ -99,7 +101,7 @@ export default function App() {
         onClick={() => setActiveView('intake')}
         className="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white text-sm font-bold cursor-pointer"
       >
-        Open Processor Intake Portal
+        Open new patient intake
       </button>
     </div>
   );
@@ -183,9 +185,17 @@ export default function App() {
   };
 
   // Navigation states
-  const [activeView, setActiveView] = useState<'database' | 'intake' | 'billing' | 'settings' | 'visitation' | 'prescriptions' | 'secure_records' | 'marketing' | 'it_support' | 'diagnostic_database' | 'patient_portal' | 'code_audit'>('database');
+  const [activeView, setActiveView] = useState<ViewId>('database');
   const [marketingTabSource, setMarketingTabSource] = useState<'marketing' | 'feedback'>('marketing');
   const [activeSettingsTab, setActiveSettingsTab] = useState<'profile' | 'account' | 'billing' | 'faq' | 'contact' | 'app'>('profile');
+  // The ID scanner starts collapsed so the patient list is the first thing staff see
+  const [scannerOpen, setScannerOpen] = useState<boolean>(() => {
+    try { return localStorage.getItem('clinic_scanner_open') === 'true'; } catch { return false; }
+  });
+  const toggleScanner = (open: boolean) => {
+    setScannerOpen(open);
+    try { localStorage.setItem('clinic_scanner_open', String(open)); } catch { /* storage unavailable */ }
+  };
   const [scannedIntakeData, setScannedIntakeData] = useState<Partial<Patient> | null>(null);
   
   // Mobile menu toggle
@@ -380,6 +390,18 @@ export default function App() {
   }, [patientsLoading]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Used by the tutorials to open a screen
+  // Menu navigation (desktop sidebar and mobile drawer)
+  const goTo = (id: ViewId) => {
+    setMobileMenuOpen(false);
+    if (id === 'marketing') setMarketingTabSource('marketing');
+    if (id === 'settings') setActiveSettingsTab('profile');
+    setActiveView(id);
+  };
+  const lockedViews: ViewId[] = [
+    ...(role === 'patient' || quotaLockedOut ? ['database' as ViewId] : []),
+    ...(quotaLockedOut ? ['visitation' as ViewId, 'intake' as ViewId] : []),
+  ];
+
   const navigateToSection = (section: AppSection) => {
     setMobileMenuOpen(false);
     if (section === 'feedback') { setActiveView('marketing'); setMarketingTabSource('feedback'); return; }
@@ -566,7 +588,7 @@ export default function App() {
       `}</style>
       
       {/* 1. SIDEBAR NAVIGATION FOR DESKTOP */}
-      <aside className="hidden md:flex w-64 bg-slate-900 text-white shrink-0 flex-col justify-between border-r border-slate-800 p-5">
+      <aside className="hidden md:flex w-64 bg-slate-900 text-white shrink-0 flex-col border-r border-slate-800 p-5 sticky top-0 h-screen overflow-y-auto">
         <div className="space-y-6">
           
           {/* Logo & Clinical Title */}
@@ -577,21 +599,6 @@ export default function App() {
             <div>
               <h1 className="text-sm font-extrabold tracking-tight text-white leading-none">{BRAND.facilityName}</h1>
               <span className="text-[10px] text-teal-400 font-mono tracking-wider font-bold block mt-0.5">{[BRAND.tagline, BRAND.developerCredit].filter(Boolean).join(' · ')}</span>
-            </div>
-          </div>
-
-          {/* Local Digital Calendar Module */}
-          <div className="bg-slate-850 p-3 rounded-xl border border-slate-800 space-y-1.5 select-none">
-            <div className="flex items-center gap-2 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-              <Clock className="w-3.5 h-3.5 text-teal-400" />
-              <span>Diagnostic Clock</span>
-            </div>
-            <span className="text-sm font-bold block tracking-wider font-mono text-teal-300 bg-slate-910 p-1.5 rounded text-center">
-              {currentTime || 'Clock active...'}
-            </span>
-            <div className="flex items-center gap-1.5 text-[9px] text-zinc-450 justify-center">
-              <CalendarDays className="w-3 h-3 text-slate-500" />
-              <span>{currentDate}</span>
             </div>
           </div>
 
@@ -799,265 +806,8 @@ export default function App() {
           )}
 
           {/* Navigation Items */}
-          <nav id="sidebar-navigation-links" className="flex flex-col gap-1.5 pt-2 select-none overflow-y-auto max-h-[70vh] pr-1">
-            
-            {/* Main section: Internal Databases and Operations Management Portal */}
-            <div className="text-[10px] uppercase font-black tracking-wider text-slate-400 pt-2 pb-1 px-1 border-b border-slate-800/60 mb-1">
-              Internal Databases and Operations Management Portal
-            </div>
-
-            <button
-              type="button"
-              id="desktop-nav-database"
-              onClick={() => setActiveView('database')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-left cursor-pointer ${
-                activeView === 'database' 
-                  ? 'bg-teal-600 text-white shadow-sm' 
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Users className="w-4 h-4 shrink-0 text-slate-400" />
-                <span>Patient Records Database</span>
-              </div>
-              {role === 'patient' || quotaLockedOut ? (
-                <KeyRound className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
-              ) : (
-                <ChevronRight className="w-3 h-3 text-slate-500" />
-              )}
-            </button>
-
-            <button
-              type="button"
-              id="desktop-nav-visitation"
-              onClick={() => setActiveView('visitation')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-left cursor-pointer ${
-                activeView === 'visitation' 
-                  ? 'bg-teal-600 text-white shadow-sm' 
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Stethoscope className="w-4 h-4 shrink-0 text-slate-400" />
-                <span>Visitation Overview and Notes</span>
-              </div>
-              {(quotaLockedOut) ? (
-                <KeyRound className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
-              ) : (
-                <ChevronRight className="w-3 h-3 text-slate-500" />
-              )}
-            </button>
-
-            <button
-              type="button"
-              id="desktop-nav-prescriptions"
-              onClick={() => setActiveView('prescriptions')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-left cursor-pointer ${
-                activeView === 'prescriptions' 
-                  ? 'bg-teal-600 text-white shadow-sm' 
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Activity className="w-4 h-4 shrink-0 text-teal-400" />
-                <span>Prescription Ledger and Care</span>
-              </div>
-              <ChevronRight className="w-3 h-3 text-slate-500" />
-            </button>
-
-            <button
-              type="button"
-              id="desktop-nav-secure-records"
-              onClick={() => setActiveView('secure_records')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-left cursor-pointer ${
-                activeView === 'secure_records' 
-                  ? 'bg-teal-600 text-white shadow-sm' 
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <ShieldCheck className="w-4 h-4 shrink-0 text-teal-400" />
-                <span>HIPAA Secure Records and AVS</span>
-              </div>
-              <ChevronRight className="w-3 h-3 text-slate-500" />
-            </button>
-
-            <button
-              type="button"
-              id="desktop-nav-marketing"
-              onClick={() => {
-                setActiveView('marketing');
-                setMarketingTabSource('marketing');
-              }}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-left cursor-pointer ${
-                (activeView === 'marketing' && marketingTabSource === 'marketing')
-                  ? 'bg-teal-600 text-white shadow-sm' 
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <MessageSquare className="w-4 h-4 shrink-0 text-teal-400" />
-                <span>Marketing Hub</span>
-              </div>
-              <ChevronRight className="w-3 h-3 text-slate-500" />
-            </button>
-
-            {/* Main section: New and Current Intake Coordination Portal */}
-            <div className="text-[10px] uppercase font-black tracking-wider text-slate-400 pt-4 pb-1 px-1 border-b border-slate-800/60 mb-1 mt-1">
-              New and Current Intake Coordination Portal
-            </div>
-
-            <button
-              type="button"
-              id="desktop-nav-intake"
-              onClick={() => setActiveView('intake')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-left cursor-pointer ${
-                activeView === 'intake' 
-                  ? 'bg-teal-600 text-white shadow-sm' 
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <ClipboardList className="w-4 h-4 shrink-0 text-slate-400" />
-                <span>Processor Intake Portal</span>
-              </div>
-              {(quotaLockedOut) ? (
-                <KeyRound className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
-              ) : (
-                <ChevronRight className="w-3 h-3 text-slate-500" />
-              )}
-            </button>
-
-            <button
-              type="button"
-              id="desktop-nav-patient-portal"
-              onClick={() => setActiveView('patient_portal')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-black tracking-wide transition-all text-left cursor-pointer ${
-                activeView === 'patient_portal' 
-                  ? 'bg-teal-600 text-white shadow-sm' 
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-400" />
-                <span>Patient Portal Dashboard</span>
-              </div>
-              <ChevronRight className="w-3 h-3 text-slate-500" />
-            </button>
-
-            <button
-              type="button"
-              id="desktop-nav-settings"
-              onClick={() => {
-                setActiveView('settings');
-                setActiveSettingsTab('profile');
-              }}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-left cursor-pointer ${
-                activeView === 'settings' 
-                  ? 'bg-teal-600 text-white shadow-sm' 
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Settings className="w-4 h-4 shrink-0 text-slate-400" />
-                <span>Patient Profile Settings</span>
-              </div>
-              <ChevronRight className="w-3 h-3 text-slate-500" />
-            </button>
-
-            <button
-              type="button"
-              id="desktop-nav-feedback"
-              onClick={() => {
-                setActiveView('marketing');
-                setMarketingTabSource('feedback');
-              }}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-left cursor-pointer ${
-                (activeView === 'marketing' && marketingTabSource === 'feedback')
-                  ? 'bg-teal-600 text-white shadow-sm' 
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <MessageSquare className="w-4 h-4 shrink-0 text-cyan-400" />
-                <span>Feedback Hub</span>
-              </div>
-              <ChevronRight className="w-3 h-3 text-slate-500" />
-            </button>
-
-            {/* Main section: Help Desk and Database Management */}
-            <div className="text-[10px] uppercase font-black tracking-wider text-slate-400 pt-4 pb-1 px-1 border-b border-slate-800/60 mb-1 mt-1">
-              Help Desk and Database Management
-            </div>
-
-            <button
-              type="button"
-              id="desktop-nav-it-support"
-              onClick={() => setActiveView('it_support')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-left cursor-pointer ${
-                activeView === 'it_support' 
-                  ? 'bg-rose-950 text-rose-350 border border-rose-900/30' 
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Terminal className="w-4 h-4 shrink-0 text-rose-400 animate-pulse" />
-                <span>IT Support</span>
-              </div>
-              <ChevronRight className="w-3 h-3 text-slate-500" />
-            </button>
-
-            <button
-              type="button"
-              id="desktop-nav-diagnostic"
-              onClick={() => setActiveView('diagnostic_database')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-left cursor-pointer ${
-                activeView === 'diagnostic_database' 
-                  ? 'bg-emerald-950 text-emerald-350 border border-emerald-900/40 font-extrabold' 
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Database className="w-4 h-4 shrink-0 text-emerald-400 animate-pulse" />
-                <span>Diagnostic Database</span>
-              </div>
-              <ChevronRight className="w-3 h-3 text-slate-500" />
-            </button>
-
-            <button
-              type="button"
-              id="desktop-nav-code-audit"
-              onClick={() => setActiveView('code_audit')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition-all text-left cursor-pointer ${
-                activeView === 'code_audit'
-                  ? 'bg-teal-950 text-teal-350 border border-teal-900/40 font-extrabold'
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Terminal className="w-4 h-4 shrink-0 text-teal-400" />
-                <span>Code & Prompt Auditor</span>
-              </div>
-              <ChevronRight className="w-3 h-3 text-slate-500" />
-            </button>
-
-          </nav>
-        </div>
-
-        {/* Sidebar Footer with system values */}
-        <div className="pt-4 border-t border-slate-800 text-[10px] text-slate-500 space-y-2">
-          <div className="flex justify-between font-mono">
-            <span>Server status:</span>
-            <span className="text-emerald-400 font-bold font-sans">Active</span>
-          </div>
-          <div className="flex justify-between font-mono">
-            <span>Clearance:</span>
-            {role === 'ops_manager' && <span className="text-amber-400 font-semibold uppercase text-[9px]">Ops Mgr (L3)</span>}
-            {role === 'team_lead' && <span className="text-purple-400 font-semibold uppercase text-[9px]">Team Lead (L2)</span>}
-            {role === 'admin' && <span className="text-teal-400 font-semibold uppercase text-[9px]">Admin (L1)</span>}
-            {role === 'it_support' && <span className="text-rose-400 font-bold uppercase text-[9px] tracking-wide animate-pulse">IT Support (8888)</span>}
-            {role === 'facility_database_administrator' && <span className="text-emerald-400 font-bold uppercase text-[9px] tracking-wide animate-pulse">DB Admin (FDBA 9999)</span>}
-            {role === 'patient' && <span className="text-amber-500 font-semibold uppercase text-[9px]">Patient Mode</span>}
+          <div id="sidebar-navigation-links" className="pt-2">
+            <NavMenu idPrefix="desktop" activeView={activeView} onNavigate={goTo} lockedViews={lockedViews} />
           </div>
         </div>
       </aside>
@@ -1091,7 +841,7 @@ export default function App() {
       {/* Mobile Drawer Menu Overlays */}
       {mobileMenuOpen && (
         <div id="mobile-navigation-drawer" className="md:hidden fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-30 flex justify-end transition-all">
-          <div className="w-64 bg-slate-900 text-white p-5 space-y-6 animate-in slide-in-from-right duration-250">
+          <div className="w-64 h-screen sticky top-0 overflow-y-auto bg-slate-900 text-white p-5 space-y-6 animate-in slide-in-from-right duration-250">
             <div className="flex justify-between items-center pb-3 border-b border-slate-800">
               <span className="text-[10px] text-slate-400 font-extrabold uppercase">Console Navigation</span>
               <button 
@@ -1167,212 +917,7 @@ export default function App() {
             </div>
             )}
 
-            <nav className="flex flex-col gap-2 overflow-y-auto max-h-[60vh] pr-1">
-              
-              {/* Main section: Internal Databases and Operations Management Portal */}
-              <div className="text-[9px] uppercase font-bold tracking-wider text-slate-500 pt-1 pb-1 px-1 border-b border-slate-850/55 mb-1">
-                Internal Databases & Operations Mgmt
-              </div>
-
-              <button
-                type="button"
-                id="mobile-nav-database"
-                onClick={() => {
-                  setActiveView('database');
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between ${
-                  activeView === 'database' ? 'bg-teal-600 text-white' : 'text-slate-400 hover:bg-slate-850'
-                }`}
-              >
-                <span>Patient Records Database</span>
-                {(role === 'patient' || quotaLockedOut) && (
-                  <span className="text-[10px] text-amber-500">🔒</span>
-                )}
-              </button>
-
-              <button
-                type="button"
-                id="mobile-nav-visitation"
-                onClick={() => {
-                  setActiveView('visitation');
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between ${
-                  activeView === 'visitation' ? 'bg-teal-600 text-white' : 'text-slate-400 hover:bg-slate-850'
-                }`}
-              >
-                <span>Visitation Overview and Notes</span>
-                {(quotaLockedOut) && (
-                  <span className="text-[10px] text-amber-500">🔒</span>
-                )}
-              </button>
-
-              <button
-                type="button"
-                id="mobile-nav-prescriptions"
-                onClick={() => {
-                  setActiveView('prescriptions');
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between ${
-                  activeView === 'prescriptions' ? 'bg-teal-600 text-white' : 'text-slate-400 hover:bg-slate-850'
-                }`}
-              >
-                <span>Prescription Ledger and Care</span>
-              </button>
-
-              <button
-                type="button"
-                id="mobile-nav-secure-records"
-                onClick={() => {
-                  setActiveView('secure_records');
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between ${
-                  activeView === 'secure_records' ? 'bg-teal-600 text-white' : 'text-slate-400 hover:bg-slate-850'
-                }`}
-              >
-                <span>HIPAA Secure Records and AVS</span>
-              </button>
-
-              <button
-                type="button"
-                id="mobile-nav-marketing"
-                onClick={() => {
-                  setActiveView('marketing');
-                  setMarketingTabSource('marketing');
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between ${
-                  activeView === 'marketing' && marketingTabSource === 'marketing' ? 'bg-teal-600 text-white' : 'text-slate-400 hover:bg-slate-850'
-                }`}
-              >
-                <span>Marketing Hub</span>
-              </button>
-
-              {/* Main section: New and Current Intake Coordination Portal */}
-              <div className="text-[9px] uppercase font-bold tracking-wider text-slate-500 pt-2 pb-1 px-1 border-b border-slate-850/55 mb-1 mt-1">
-                New & Current Intake Coordination
-              </div>
-
-              <button
-                type="button"
-                id="mobile-nav-intake"
-                onClick={() => {
-                  setActiveView('intake');
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between ${
-                  activeView === 'intake' ? 'bg-teal-600 text-white' : 'text-slate-400 hover:bg-slate-850'
-                }`}
-              >
-                <span>Processor Intake Portal</span>
-                {(quotaLockedOut) && (
-                  <span className="text-[10px] text-amber-500">🔒</span>
-                )}
-              </button>
-
-              <button
-                type="button"
-                id="mobile-nav-patient-portal"
-                onClick={() => {
-                  setActiveView('patient_portal');
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between ${
-                  activeView === 'patient_portal' ? 'bg-teal-600 text-white' : 'text-slate-400 hover:bg-slate-850'
-                }`}
-              >
-                <span>Patient Portal Dashboard</span>
-              </button>
-
-              <button
-                type="button"
-                id="mobile-nav-settings"
-                onClick={() => {
-                  setActiveView('settings');
-                  setActiveSettingsTab('profile');
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-all ${
-                  activeView === 'settings' ? 'bg-teal-600 text-white' : 'text-slate-400 hover:bg-slate-850'
-                }`}
-              >
-                Patient Profile Settings
-              </button>
-
-              <button
-                type="button"
-                id="mobile-nav-feedback"
-                onClick={() => {
-                  setActiveView('marketing');
-                  setMarketingTabSource('feedback');
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between ${
-                  activeView === 'marketing' && marketingTabSource === 'feedback' ? 'bg-teal-600 text-white' : 'text-slate-400 hover:bg-slate-850'
-                }`}
-              >
-                <span>Feedback Hub</span>
-              </button>
-
-              {/* Main section: Help Desk and Database Management */}
-              <div className="text-[9px] uppercase font-bold tracking-wider text-slate-500 pt-2 pb-1 px-1 border-b border-slate-850/55 mb-1 mt-1">
-                Help Desk & Database Management
-              </div>
-
-              <button
-                type="button"
-                id="mobile-nav-it-support"
-                onClick={() => {
-                  setActiveView('it_support');
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between ${
-                  activeView === 'it_support' ? 'bg-rose-950 text-rose-350 border border-rose-900/30' : 'text-slate-400 hover:bg-slate-850'
-                }`}
-              >
-                <span>IT Support</span>
-                <span className="text-[10px] text-rose-500 animate-pulse">●</span>
-              </button>
-
-              <button
-                type="button"
-                id="mobile-nav-diagnostic"
-                onClick={() => {
-                  setActiveView('diagnostic_database');
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between ${
-                  activeView === 'diagnostic_database' ? 'bg-emerald-950 text-emerald-350 border border-emerald-900/30' : 'text-slate-400 hover:bg-slate-850'
-                }`}
-              >
-                <span>Diagnostic Database</span>
-                <span className="text-[10px] text-emerald-500 animate-pulse">●</span>
-              </button>
-
-              <button
-                type="button"
-                id="mobile-nav-code-audit"
-                onClick={() => {
-                  setActiveView('code_audit');
-                  setMobileMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-between ${
-                  activeView === 'code_audit' ? 'bg-teal-950 text-teal-350 border border-teal-900/30' : 'text-slate-400 hover:bg-slate-850'
-                }`}
-              >
-                <span>Code & Prompt Auditor</span>
-                <span className="text-[10px] text-teal-400 font-mono">AI</span>
-              </button>
-            </nav>
-
-            <div className="bg-slate-850 p-3.5 rounded-xl border border-slate-800 text-[11px] space-y-1 select-none">
-              <span className="text-[9px] text-slate-450 uppercase block">Active Device Date</span>
-              <strong className="block text-slate-200">{currentTime}</strong>
-              <span className="text-[10px] text-slate-500 block">{currentDate}</span>
-            </div>
+            <NavMenu idPrefix="mobile" activeView={activeView} onNavigate={goTo} lockedViews={lockedViews} />
           </div>
         </div>
       )}
@@ -1383,19 +928,10 @@ export default function App() {
         {/* Top bar for desktop (Dossier search + notifications + clinical quick utilities) */}
         <div className="hidden md:flex bg-white px-6 py-4 border-b border-slate-150 items-center justify-between sticky top-0 z-10 shadow-3xs">
           <div>
-            <h2 className="text-base font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-              {activeView === 'database' && 'Registered Patients Directory'}
-              {activeView === 'intake' && 'Emergency Intake Registration'}
-              {activeView === 'billing' && 'Payment Processor Ledger'}
-              {activeView === 'visitation' && 'Visitation Overview & Clinical Notes'}
-              {activeView === 'prescriptions' && 'Medications & Clinical Prescriptions Ledger'}
-              {activeView === 'secure_records' && 'HIPAA Secure Conversations & After-Visit Summaries'}
-              {activeView === 'marketing' && 'Communications, Feedbacks & Marketing Hub'}
-              {activeView === 'it_support' && 'Ops & IT Security System Desk'}
-              {activeView === 'settings' && 'Patient Setting Dossier'}
-              {activeView === 'patient_portal' && 'Patient Portal Self-Access Hub'}
+            <h2 className="text-base font-bold text-slate-900 tracking-tight flex items-center gap-2">
+              {viewMeta(activeView).title}
             </h2>
-            <p className="text-xs text-slate-450">Clinic Desk Session: {BRAND.facilityName}</p>
+            <p className="text-xs text-slate-500">{viewMeta(activeView).description}</p>
           </div>
 
           <div className="flex items-center gap-4">
@@ -1441,12 +977,7 @@ export default function App() {
                     if (unlockedRole === 'admin') setAdminEditCount(0);
                     if (unlockedRole === 'team_lead') setTeamLeadEditCount(0);
                   }} 
-                  requestedSectionName={
-                    activeView === 'database' ? 'Patient Records Database' :
-                    activeView === 'intake' ? 'Processor Intake Portal' :
-                    activeView === 'visitation' ? 'Clinical Visitation Tracker' :
-                    'Financial Billing Ledger'
-                  }
+                  requestedSectionName={viewMeta(activeView).title}
                 />
               );
             }
@@ -1454,13 +985,32 @@ export default function App() {
             return (
               <>
                 {!isViewGated && role !== 'patient' && (activeView === 'database' || activeView === 'intake') && (
-                  <ScanStation 
-                    patients={patients}
-                    onSelectPatientId={(id) => setActivePatientId(id)}
-                    onSetScannedIntakeData={(data) => setScannedIntakeData(data)}
-                    onSetActiveView={(view) => setActiveView(view)}
-                    onLogITEvent={logITEvent}
-                  />
+                  scannerOpen ? (
+                    <div className="space-y-2">
+                      <div className="flex justify-end">
+                        <button type="button" onClick={() => toggleScanner(false)} className="text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1 cursor-pointer">
+                          <ScanLine className="w-3.5 h-3.5" /> Hide scanner
+                        </button>
+                      </div>
+                      <ScanStation
+                        patients={patients}
+                        onSelectPatientId={(id) => setActivePatientId(id)}
+                        onSetScannedIntakeData={(data) => setScannedIntakeData(data)}
+                        onSetActiveView={(view) => setActiveView(view)}
+                        onLogITEvent={logITEvent}
+                      />
+                    </div>
+                  ) : (
+                    <button type="button" id="open-scanner-btn" onClick={() => toggleScanner(true)}
+                      className="w-full flex items-center gap-3 rounded-xl border border-dashed border-slate-300 bg-white px-4 py-3 text-left hover:border-teal-500 hover:bg-teal-50/40 transition-colors cursor-pointer">
+                      <ScanLine className="w-5 h-5 text-teal-600 shrink-0" />
+                      <span className="flex-1">
+                        <span className="block text-sm font-semibold text-slate-900">Scan an ID or wristband</span>
+                        <span className="block text-xs text-slate-500">Open the scanner to look up a patient or prefill intake from an ID.</span>
+                      </span>
+                      <span className="text-xs font-bold text-teal-700">Open scanner</span>
+                    </button>
+                  )
                 )}
 
                 {activeView === 'database' && (

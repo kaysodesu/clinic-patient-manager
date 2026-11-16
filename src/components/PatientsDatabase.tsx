@@ -255,7 +255,7 @@ export default function PatientsDatabase({
               <div className="bg-white p-5 rounded-2xl border border-slate-150 shadow-xs space-y-3">
                 <div className="flex items-center gap-2 border-b border-slate-100 pb-2 mb-2">
                   <Briefcase className="w-4 h-4 text-teal-600" />
-                  <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">2. Career & Safety Liaison</h3>
+                  <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">2. Employment & emergency contact</h3>
                 </div>
                 <div className="text-xs space-y-2.5 font-sans text-slate-700">
                   <div className="grid grid-cols-2 gap-2">
@@ -383,7 +383,7 @@ export default function PatientsDatabase({
               <div className="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-slate-350 md:col-span-2 space-y-3">
                 <div className="flex items-center gap-2 border-b border-slate-800 pb-2 mb-2">
                   <Shield className="w-4 h-4 text-teal-400 animate-pulse" />
-                  <h3 className="text-xs font-bold text-white uppercase tracking-wider">6. Carrier Coverage Ledger & Fixed Copays</h3>
+                  <h3 className="text-xs font-bold text-white uppercase tracking-wider">6. Insurance & copays</h3>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-sans">
                   <div>

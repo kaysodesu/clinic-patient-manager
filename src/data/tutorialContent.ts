@@ -29,19 +29,19 @@ export interface SectionGuide {
 
 export const SECTION_GUIDES: SectionGuide[] = [
   {
-    section: 'database', label: 'Patient Records Database', navTarget: '#desktop-nav-database', videoLength: '0:40',
+    section: 'database', label: 'Patients', navTarget: '#desktop-nav-database', videoLength: '0:40',
     summary: 'The home screen: scan IDs, search every registered patient and update their visit status.',
     steps: [
-      { id: 'db-1', section: 'database', target: '#desktop-nav-database', title: 'Patient Records Database',
+      { id: 'db-1', section: 'database', target: '#desktop-nav-database', title: 'Patients',
         body: 'This is home base. Every registered patient appears here with their status: In Processing, Triage, With Doctor or Discharged.' },
-      { id: 'db-2', section: 'database', target: 'main', title: 'Front desk scanner',
+      { id: 'db-2', section: 'database', target: 'main', title: 'ID & wristband scanner',
         body: 'At the top, the scanner reads wristbands, licenses, state IDs and passports. Try a sample ID card: it pre-fills the intake form for a new patient or opens the chart of an existing one.' },
       { id: 'db-3', section: 'database', target: '#load-test-patients-btn', title: 'Load test patients',
         body: 'Click "Load Test Patients" to add five fictional patients, each with a visit and an invoice, so you have something to practice on. "New Intake" registers a brand-new patient.' },
     ],
   },
   {
-    section: 'intake', label: 'Processor Intake Portal', navTarget: '#desktop-nav-intake', videoLength: '0:30',
+    section: 'intake', label: 'New patient intake', navTarget: '#desktop-nav-intake', videoLength: '0:30',
     summary: 'A guided four-step registration form for new patients.',
     steps: [
       { id: 'in-1', section: 'intake', target: 'main', title: 'Four-step intake',
@@ -49,7 +49,7 @@ export const SECTION_GUIDES: SectionGuide[] = [
     ],
   },
   {
-    section: 'visitation', label: 'Visitation Overview and Notes', navTarget: '#desktop-nav-visitation', videoLength: '0:45',
+    section: 'visitation', label: 'Visits & notes', navTarget: '#desktop-nav-visitation', videoLength: '0:45',
     summary: 'Clinicians record visits with ICD-10 and CPT codes, write progress notes, schedule and arrange transfers.',
     steps: [
       { id: 'vi-1', section: 'visitation', target: 'main', title: 'Visits and coding',
@@ -59,7 +59,7 @@ export const SECTION_GUIDES: SectionGuide[] = [
     ],
   },
   {
-    section: 'prescriptions', label: 'Prescription Ledger and Care', navTarget: '#desktop-nav-prescriptions', videoLength: '0:30',
+    section: 'prescriptions', label: 'Prescriptions', navTarget: '#desktop-nav-prescriptions', videoLength: '0:30',
     summary: 'Prescribe and track medications, with the patient’s allergies in view.',
     steps: [
       { id: 'rx-1', section: 'prescriptions', target: 'main', title: 'Prescriptions',
@@ -67,7 +67,7 @@ export const SECTION_GUIDES: SectionGuide[] = [
     ],
   },
   {
-    section: 'secure_records', label: 'HIPAA Secure Records and AVS', navTarget: '#desktop-nav-secure-records', videoLength: '0:35',
+    section: 'secure_records', label: 'Messages & summaries', navTarget: '#desktop-nav-secure-records', videoLength: '0:35',
     summary: 'Secure doctor-patient conversation records and after-visit summaries.',
     steps: [
       { id: 'sr-1', section: 'secure_records', target: 'main', title: 'Secure records',
@@ -75,7 +75,7 @@ export const SECTION_GUIDES: SectionGuide[] = [
     ],
   },
   {
-    section: 'marketing', label: 'Marketing Hub', navTarget: '#desktop-nav-marketing', videoLength: '0:30',
+    section: 'marketing', label: 'Outreach & feedback', navTarget: '#desktop-nav-marketing', videoLength: '0:30',
     summary: 'Send reminders, newsletters and consent requests by text or email.',
     steps: [
       { id: 'mk-1', section: 'marketing', target: 'main', title: 'Patient communications',
@@ -83,7 +83,7 @@ export const SECTION_GUIDES: SectionGuide[] = [
     ],
   },
   {
-    section: 'feedback', label: 'Feedback Hub', navTarget: '#desktop-nav-feedback', videoLength: '0:20',
+    section: 'feedback', label: 'Patient feedback', navTarget: '#desktop-nav-marketing', videoLength: '0:20',
     summary: 'Collect and review patient feedback and satisfaction surveys.',
     steps: [
       { id: 'fb-1', section: 'feedback', target: 'main', title: 'Feedback',
@@ -91,7 +91,7 @@ export const SECTION_GUIDES: SectionGuide[] = [
     ],
   },
   {
-    section: 'patient_portal', label: 'Patient Portal Dashboard', navTarget: '#desktop-nav-patient-portal', videoLength: '0:35',
+    section: 'patient_portal', label: 'Patient portal', navTarget: '#desktop-nav-patient-portal', videoLength: '0:35',
     summary: 'What patients, parents and legal representatives see when they sign in.',
     steps: [
       { id: 'pp-1', section: 'patient_portal', target: 'main', title: 'Patient portal',
@@ -99,7 +99,7 @@ export const SECTION_GUIDES: SectionGuide[] = [
     ],
   },
   {
-    section: 'settings', label: 'Patient Profile Settings', navTarget: '#desktop-nav-settings', videoLength: '0:25',
+    section: 'settings', label: 'Patient profile', navTarget: '#desktop-nav-settings', videoLength: '0:25',
     summary: 'Profile details, billing and payment methods, FAQs, contact and app display settings.',
     steps: [
       { id: 'st-1', section: 'settings', target: 'main', title: 'Profile and settings',
@@ -107,7 +107,7 @@ export const SECTION_GUIDES: SectionGuide[] = [
     ],
   },
   {
-    section: 'it_support', label: 'IT Support', navTarget: '#desktop-nav-it-support', videoLength: '0:25',
+    section: 'it_support', label: 'IT support', navTarget: '#desktop-nav-it-support', videoLength: '0:25',
     summary: 'System activity log, duplicate-record merging and troubleshooting (IT, Operations and Admin roles).',
     steps: [
       { id: 'it-1', section: 'it_support', target: 'main', title: 'IT Support desk',
@@ -115,10 +115,10 @@ export const SECTION_GUIDES: SectionGuide[] = [
     ],
   },
   {
-    section: 'diagnostic_database', label: 'Diagnostic Database', navTarget: '#desktop-nav-diagnostic', videoLength: '0:40',
+    section: 'diagnostic_database', label: 'Diagnosis reference', navTarget: '#desktop-nav-diagnostic', videoLength: '0:40',
     summary: 'The clinic’s code library (ICD-10, CPT, HCPCS) and condition guidance (Database Administrator and Admin roles).',
     steps: [
-      { id: 'dx-1', section: 'diagnostic_database', target: 'main', title: 'Diagnostic Database',
+      { id: 'dx-1', section: 'diagnostic_database', target: 'main', title: 'Diagnosis reference',
         body: 'Open to Database Administrators and Administrators. "Codes Registry Admin" holds the 2026 primary-care code set; "Conditions Advisory" links common conditions to ICD-10 codes with medications, cautions and after-care.' },
     ],
   },
@@ -159,7 +159,7 @@ This beta is a working demonstration built for hands-on testing and honest feedb
 export const GETTING_STARTED: string[] = [
   'Sign in with the email and password your clinic administrator gave you. The very first person to open a new installation creates the administrator account.',
   'When the welcome window appears, pick a guided tour (you click Next), an automatic tour (it plays by itself) or the how-to walkthroughs. You can skip and come back any time with the Help button in the bottom-right corner.',
-  'On Patient Records Database, click "Load Test Patients" to add five fictional practice patients.',
+  'On Patients, click "Load Test Patients" to add five fictional practice patients.',
   'Click a patient to make them the active patient. Most screens work with the active patient shown in the top bar.',
   "Use the sidebar (or ☰ on a phone) to move between screens. Screens your role can't open say who can.",
   'Only ever type made-up information. This beta is for testing, not real patients.',

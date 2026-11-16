@@ -253,49 +253,29 @@ export default function ITSupportPanel({
   return (
     <div className="space-y-6 font-sans">
       
-      {/* 1. TOP HEADER SUMMARY BANNER */}
-      <div className="bg-slate-950 text-white rounded-2xl p-6 border border-slate-800 shadow-xl relative overflow-hidden">
-        {/* Glow effect */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-teal-500/5 rounded-full blur-3xl pointer-events-none"></div>
-
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-400 text-[10px] uppercase font-bold tracking-wider mb-2 font-mono">
-              <Terminal className="w-3.5 h-3.5 animate-pulse" />
-              <span>Diagnostic System Terminal & Registry</span>
-            </div>
-            <h1 className="text-xl font-black tracking-tight flex items-center gap-2">
-              <span>IT Support & Audit Console</span>
-              {role === 'it_support' ? (
-                <span className="bg-teal-400 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded font-mono">IT ROOT WORKSPACE</span>
-              ) : (
-                <span className="bg-amber-400 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded font-mono">OPS MANAGER ROUTING</span>
-              )}
-            </h1>
-            <p className="text-xs text-slate-400 mt-1.5 max-w-3xl leading-relaxed">
-              System health and data integrity core dashboard. Perform multi-point customer profile deduplication merges, monitor full-fidelity clinical updates historical records, troubleshoot login validation limits, and log software diagnostic telemetry.
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-stretch md:items-center gap-2">
-            <button
-              onClick={simulateSystemError}
-              className="bg-slate-900 hover:bg-slate-850 border border-slate-800 text-amber-400 font-bold text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer font-mono"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>Trigger Test Error</span>
-            </button>
-            <button
-              onClick={() => {
-                alert("Simulated system cache purged. Active memory synchronized with secure offline local storage records.");
-                onLogITEvent('SYSTEM_ERROR', "IT Specialist triggered clinical cache reload and synchronized LocalStorage memory registers.");
-              }}
-              className="bg-teal-500 hover:bg-teal-600 text-slate-950 font-bold text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-            >
-              <RefreshCw className="w-3.5 h-3.5 animate-spin duration-[3s]" />
-              <span>Force Cache Sync</span>
-            </button>
-          </div>
+      {/* Page actions */}
+      <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 flex flex-wrap items-center gap-2">
+        <span className={`text-[11px] font-bold px-2 py-0.5 rounded ${role === 'it_support' ? 'bg-teal-50 text-teal-800' : 'bg-amber-50 text-amber-800'}`}>
+          {role === 'it_support' ? 'Signed in as IT support' : 'Signed in as operations manager'}
+        </span>
+        <div className="ml-auto flex flex-wrap gap-2">
+          <button
+            onClick={simulateSystemError}
+            className="border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs py-2 px-3 rounded-lg flex items-center gap-1.5 cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+            <span>Log a test error</span>
+          </button>
+          <button
+            onClick={() => {
+              alert("Cache refreshed. Data on this device was re-synced.");
+              onLogITEvent('SYSTEM_ERROR', "IT Specialist triggered clinical cache reload and synchronized LocalStorage memory registers.");
+            }}
+            className="bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs py-2 px-3 rounded-lg flex items-center gap-1.5 cursor-pointer"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+            <span>Refresh cache</span>
+          </button>
         </div>
       </div>
 
@@ -308,7 +288,7 @@ export default function ITSupportPanel({
             <div>
               <h3 className="text-sm font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
                 <GitPullRequest className="w-4 h-4 text-teal-600" />
-                Deduplication & Duplicate Profile Detector
+                Duplicate patient records
               </h3>
               <p className="text-[11px] text-slate-500 mt-0.5">
                 Automatically scans the database to locate overlapping patient accounts matching crucial contact vectors.
@@ -604,7 +584,7 @@ export default function ITSupportPanel({
             <div>
               <h3 className="text-xs uppercase font-extrabold font-mono tracking-wider text-slate-400 flex items-center gap-2">
                 <span className="w-1.5 h-3.5 bg-slate-900 rounded-sm"></span>
-                Software Audit Event Ledger
+                Audit log
               </h3>
               <p className="text-[10px] text-slate-500 mt-0.5">
                 Every login error, patient update, clinical visit modification and system telemetry tick is logged here in real time.

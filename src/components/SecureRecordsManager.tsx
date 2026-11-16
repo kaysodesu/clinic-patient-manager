@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import SubTabs from './ui/SubTabs';
 import { can, rolesWith } from '../auth/permissions';
 import { AccessDenied } from '../auth/AccessDenied';
 import { BRAND } from '../config/brand';
@@ -568,79 +569,31 @@ HIPAA SECURITY VERIFICATION SHIELD:
   return (
     <div id="hipaa-secure-records-container" className="space-y-6">
       
-      {/* 1. COMPLIANCE & SECURITY BRANDING BANNER */}
-      <div className="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 border border-teal-500/20 rounded-2xl p-6 text-white relative overflow-hidden shadow-md">
-        <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-          <ShieldCheck className="w-48 h-48 text-teal-400 stroke-[1]" />
-        </div>
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 z-10 relative">
-          <div className="flex items-start gap-4">
-            <div className="p-3 bg-teal-500/10 border border-teal-500/30 rounded-xl text-teal-300">
-              <ShieldCheck className="w-8 h-8" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] bg-teal-400/10 border border-teal-400/30 text-teal-300 font-extrabold uppercase font-mono px-2 py-0.5 rounded-full inline-block">HIPAA Secure Vault</span>
-                <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping" /> AES-256 Enabled
-                </span>
-              </div>
-              <h1 className="text-xl font-bold tracking-tight mt-1">Doctor-Patient Conversation Hub & After-Visit Summaries</h1>
-              <p className="text-xs text-slate-350 max-w-2xl mt-1">
-                Decryption and system records review for patient logs. Generate standardized After-Visit Summaries (AVS), certified for medical accuracy under HIPAA security rules.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-2 shrink-0">
-            <button
-              onClick={() => {
-                setSecureModeTab('portal_simulator');
-                setPortalUnlocked(false);
-                setEnteredPortalSsn('');
-                if (selectedAvs) setPortalAvsSearchId(selectedAvs.id);
-              }}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border ${
-                secureModeTab === 'portal_simulator' 
-                  ? 'bg-amber-500 text-slate-950 border-amber-400' 
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-750 border-slate-700'
-              }`}
-            >
-              <KeyRound className="w-3.5 h-3.5 font-black" />
-              <span>Patient Portal Simulator</span>
-            </button>
-            <button
-              onClick={() => setSecureModeTab('conversations')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                secureModeTab === 'conversations' 
-                  ? 'bg-teal-500 text-white shadow-sm' 
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-750'
-              }`}
-            >
-              Secure Records Dashboard
-            </button>
-            <button
-              onClick={() => {
-                setSecureModeTab('avs_editor');
-                // clear checklist for new
-                setCheckId(false);
-                setCheckVitals(false);
-                setCheckDiagnoses(false);
-                setCheckMeds(false);
-                setCheckInstructions(false);
-              }}
-              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                secureModeTab === 'avs_editor' 
-                  ? 'bg-teal-500 text-white shadow-sm' 
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-750'
-              }`}
-            >
-              <Plus className="w-3.5 h-3.5" />
-              <span>Compile New AVS</span>
-            </button>
-          </div>
-        </div>
-      </div>
+      <SubTabs
+        label="Secure records views"
+        active={secureModeTab}
+        onChange={(id) => {
+          if (id === 'portal_simulator') {
+            setPortalUnlocked(false);
+            setEnteredPortalSsn('');
+            if (selectedAvs) setPortalAvsSearchId(selectedAvs.id);
+          }
+          if (id === 'avs_editor') {
+            // start a new summary with an empty checklist
+            setCheckId(false);
+            setCheckVitals(false);
+            setCheckDiagnoses(false);
+            setCheckMeds(false);
+            setCheckInstructions(false);
+          }
+          setSecureModeTab(id);
+        }}
+        tabs={[
+          { id: 'conversations', label: 'Conversations & summaries', icon: ShieldCheck },
+          { id: 'avs_editor', label: 'New after-visit summary', icon: Plus },
+          { id: 'portal_simulator', label: 'Preview in patient portal', icon: KeyRound },
+        ]}
+      />
 
       {/* 2. TAB SWAPPER CONTAINER ELEMENT */}
       <AnimatePresence mode="wait">
@@ -660,7 +613,7 @@ HIPAA SECURITY VERIFICATION SHIELD:
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wide flex items-center gap-2">
                   <Activity className="w-4 h-4 text-teal-500" />
-                  <span>Secure Conversations Vault</span>
+                  <span>Conversations</span>
                 </h3>
                 <span className="text-[10px] font-mono bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">
                   Count: {conversations.length}
@@ -831,7 +784,7 @@ HIPAA SECURITY VERIFICATION SHIELD:
                           </span>
                           <span className="text-xs text-slate-450 font-medium">Logged on {activeConv.date}</span>
                         </div>
-                        <h4 className="text-sm font-extrabold text-slate-900 mt-1">Dialogue Dossier: {activeConv.patientName} & {activeConv.doctorName}</h4>
+                        <h4 className="text-sm font-extrabold text-slate-900 mt-1">Conversation: {activeConv.patientName} & {activeConv.doctorName}</h4>
                       </div>
                       <span className={`text-[10px] font-mono border px-2 py-0.5 rounded-full font-bold ${
                         isDecrypted ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200 animate-pulse'
@@ -920,7 +873,7 @@ HIPAA SECURITY VERIFICATION SHIELD:
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wide flex items-center gap-2">
                     <FileText className="w-4 h-4 text-teal-500" />
-                    <span>Clinical After-Visit Summaries Ledger</span>
+                    <span>After-visit summaries</span>
                   </h3>
                   <span className="text-[10px] font-mono bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">
                     Active AVS: {summaries.filter(s => s.patientId === activePatient?.id).length}
@@ -1675,7 +1628,7 @@ HIPAA SECURITY VERIFICATION SHIELD:
                   <KeyRound className="w-5 h-5 line-clamp-1 shrink-0" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-extrabold uppercase tracking-widest text-slate-50">Patient Secure Portal Decrypter</h3>
+                  <h3 className="text-sm font-extrabold uppercase tracking-widest text-slate-50">Patient portal preview</h3>
                   <p className="text-[10.5px] text-slate-400 leading-tight">Authenticating access via federal regulatory SSN keys</p>
                 </div>
               </div>

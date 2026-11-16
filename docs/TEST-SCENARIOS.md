@@ -4,7 +4,7 @@ Five fictional patients for trying every workflow. **Use only made-up informatio
 
 ## Getting started
 1. Sign in (or create the administrator account on first run).
-2. On **Patient Records Database**, click **Load Test Patients**. This adds the five fictional patients below (it skips any that are already loaded).
+2. On **Patients**, click **Load Test Patients**. This adds the five fictional patients below (it skips any that are already loaded).
 3. Everyone in the clinic shares one database, so you see colleagues' changes after refreshing the page.
 
 Each scenario lists the tasks to try and the codes you should see.
@@ -15,9 +15,9 @@ Each scenario lists the tasks to try and the codes you should see.
 *34-year-old, new patient, Northwind Health PPO (test)*
 
 - [ ] Find Maya in Patient Records and move her status from **With Doctor** to **Discharged**.
-- [ ] In **Visitation Overview**, open her visit and check the codes: preventive visit `99385`, labs `36415` `83036` `80061`, diagnoses `Z00.01` `R73.03` `E66.9` `Z71.3`.
+- [ ] In **Visits & notes**, open her visit and check the codes: preventive visit `99385`, labs `36415` `83036` `80061`, diagnoses `Z00.01` `R73.03` `E66.9` `Z71.3`.
 - [ ] Schedule a 3-month follow-up to recheck her A1c.
-- [ ] In **HIPAA Secure Records**, write an after-visit summary explaining prediabetes.
+- [ ] In **Messages & summaries**, write an after-visit summary explaining prediabetes.
 - [ ] In **Billing**, find her $25 copay invoice and record a payment.
 
 ## 2. Robert Delgado (TEST-002): Uncontrolled diabetes and blood pressure
@@ -41,7 +41,7 @@ Each scenario lists the tasks to try and the codes you should see.
 *26-year-old, video visit from home, on sertraline*
 
 - [ ] Check the telehealth visit codes: `98006` (audio-video, established, moderate), `96127` (GAD-7 / PHQ-9 screening), `F41.1`.
-- [ ] In **Diagnostic Database → Conditions**, look up *Generalized Anxiety Disorder* and review the treatment guidance.
+- [ ] In **Diagnosis reference → Conditions & care guidance**, look up *Generalized Anxiety Disorder* and review the treatment guidance.
 - [ ] Use the **Marketing / Communications Hub** to send a follow-up reminder by text or email.
 - [ ] Write an after-visit summary with sleep-hygiene tips and a CBT referral.
 
@@ -56,6 +56,6 @@ Each scenario lists the tasks to try and the codes you should see.
 ---
 
 ## Also try
-- [ ] **Processor Intake Portal**: register a brand-new made-up patient from start to finish.
-- [ ] **Diagnostic Database** (Administrator or Database Administrator role): search for `telehealth`, `ICD-10` or `99214`, and add a custom code.
+- [ ] **New patient intake**: register a brand-new made-up patient from start to finish.
+- [ ] **Diagnosis reference** (Administrator or Database Administrator role): search for `telehealth`, `ICD-10` or `99214`, and add a custom code.
 - [ ] Use the app on a **phone or tablet** and note anything that is hard to tap or read.

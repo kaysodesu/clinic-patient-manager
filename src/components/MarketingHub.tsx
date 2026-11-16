@@ -337,26 +337,6 @@ export default function MarketingHub({
   return (
     <div id="marketing-feedback-hub" className="space-y-6">
       
-      {/* 1. TOP STATS ROW & CAMPAIGN DESCRIPTION */}
-      <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 shadow-sm">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/25 text-teal-400 text-[10px] uppercase font-bold tracking-wider mb-2">
-              <Activity className="w-3.5 h-3.5" />
-              <span>Patient Communications & Engagement Hub</span>
-            </div>
-            <h1 className="text-xl font-bold tracking-tight">Feedback, Newsletters & Marketing Suite</h1>
-            <p className="text-xs text-slate-400 mt-1 max-w-2xl">
-              Construct high-fidelity patient touchpoints. Issue multi-channel updates with automatic SMS consent safeguards, comprehensive visit newsletters, interactive SVG progress indices, and educational references from Mayo Clinic and WebMD.
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] uppercase tracking-wider text-slate-500 font-mono">{BRAND.facilityName}</span>
-            <div className="w-1.5 h-1.5 rounded-full bg-teal-500"></div>
-          </div>
-        </div>
-      </div>
-
       {/* 2. CORE INTERACTIVE HUB WORKSPACE */}
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
         
@@ -367,7 +347,7 @@ export default function MarketingHub({
           <div className="bg-white border border-slate-150 rounded-2xl p-5 shadow-xs">
             <h3 className="text-xs uppercase font-bold font-mono tracking-wider text-slate-400 mb-4 flex items-center gap-2">
               <span className="w-1.5 h-3.5 bg-teal-600 rounded-sm"></span>
-              Client Context Association (Dossier)
+              Patient
             </h3>
 
             <div className="space-y-4">
@@ -441,7 +421,7 @@ export default function MarketingHub({
           <div className="bg-white border border-slate-150 rounded-2xl p-5 shadow-xs">
             <h3 className="text-xs uppercase font-bold font-mono tracking-wider text-slate-400 mb-4 flex items-center gap-2">
               <span className="w-1.5 h-3.5 bg-sky-600 rounded-sm"></span>
-              Channel Selection & Media Templates
+              Channel & template
             </h3>
 
             {/* Toggle switch */}
@@ -782,7 +762,7 @@ export default function MarketingHub({
                 <div className="flex items-center gap-2">
                   <Mail className="w-5 h-5 text-teal-400" />
                   <div>
-                    <h3 className="text-sm font-bold leading-none">Email Client Document Viewhouse</h3>
+                    <h3 className="text-sm font-bold leading-none">Message preview</h3>
                     <span className="text-[10px] text-slate-400 mt-1 block">Live interactive layout preview</span>
                   </div>
                 </div>
@@ -1049,7 +1029,7 @@ export default function MarketingHub({
       <div className="bg-white border border-slate-150 rounded-2xl p-5 shadow-xs">
         <h3 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-2 mb-4">
           <FileText className="w-4 h-4 text-teal-600" />
-          Hub Broadcast Dispatch Audit Logs
+          Sent messages log
         </h3>
 
         {dispatchLogs.length === 0 ? (

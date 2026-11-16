@@ -425,7 +425,7 @@ export default function ScanStation({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-extrabold text-slate-100 tracking-wide uppercase">Front Desk Scanner Terminus</h3>
+              <h3 className="text-sm font-extrabold text-slate-100 tracking-wide uppercase">ID & wristband scanner</h3>
               <span className="bg-teal-500/10 text-teal-400 border border-teal-500/20 px-2 py-0.5 rounded text-[9px] font-mono font-bold">RFID v4.4 Active</span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">Scan patients' wristbands, driver's licenses, state IDs, or passport barcodes to retrieve registries instantly.</p>
@@ -687,7 +687,7 @@ export default function ScanStation({
                 <span>
                   {scanResult.status === 'MATCHED_EXISTING' 
                     ? `Retrieve ${scanResult.patient.personalInfo.firstName}'s Dossier Records File` 
-                    : `Prepopulate ${scanResult.personalInfo.firstName}'s Info into Processor Intake Portal`
+                    : `Prepopulate ${scanResult.personalInfo.firstName}'s info into New patient intake`
                   }
                 </span>
                 <ArrowRight className="w-4 h-4" />

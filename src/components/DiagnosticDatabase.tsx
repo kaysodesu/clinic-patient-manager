@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SubTabs from './ui/SubTabs';
 import { can, rolesWith } from '../auth/permissions';
 import { AccessDenied } from '../auth/AccessDenied';
 import { motion, AnimatePresence } from 'motion/react';
@@ -166,6 +167,8 @@ export default function DiagnosticDatabase({
 
   // Multi-View Sub Tab
   const [activeSubTab, setActiveSubTab] = useState<'conditions' | 'codes'>('conditions');
+  // Condition cards start collapsed so the list stays scannable
+  const [expandedConds, setExpandedConds] = useState<string[]>([]);
 
   // Medical Conditions Catalog & Diagnostic section state
   const [conditions, setConditions] = useState<MedicalCondition[]>([]);
@@ -676,87 +679,35 @@ export default function DiagnosticDatabase({
   return (
     <div className="space-y-6 font-sans">
       
-      {/* Dashboard Title Panel */}
-      <div className="bg-slate-900 text-white rounded-3xl p-6 border border-slate-800 shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10 text-left">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/15 border border-teal-500/30 text-teal-400 text-[10px] uppercase font-bold tracking-wider mb-2 font-mono">
-              <Database className="w-3.5 h-3.5" />
-              <span>Diagnostic Codes & Sickness Advisory Board</span>
-            </div>
-            <h1 className="text-xl md:text-2xl font-black tracking-tight flex items-center gap-2">
-              <span>Facility Clinical Database Console</span>
-              <span className="bg-teal-400 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded font-mono uppercase tracking-wider">FDBA PRIVILEGE LEVEL</span>
-            </h1>
-            <p className="text-xs text-slate-400 mt-1.5 max-w-2xl leading-relaxed">
-              {activeSubTab === 'codes' 
-                ? 'Add, audit, remove, and de-duplicate registered CPT/HCPCS diagnostic standards. Establish Legitimacy and Industry Compliance indices based on entry date. Drag and drop bulk text layouts for instant facility local codebook integration.'
-                : 'Categorize physical sicknesses, high-infectious illnesses, chronic medical conditions, and typical symptoms. Document standard diagnostic probabilities, drug safety guidelines, allergy warnings, adverse side effects, and strict after-care checklists.'
-              }
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0">
-            {activeSubTab === 'codes' ? (
-              <>
-                <button
-                  type="button"
-                  onClick={() => setIsFormOpen(true)}
-                  className="px-4 py-2.5 bg-teal-500 hover:bg-teal-600 text-slate-950 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  <Plus className="w-4 h-4 text-slate-950 stroke-[2.5]" />
-                  <span>Create Diagnostic Register</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={handleExportCodes}
-                  className="px-4 py-2.5 bg-slate-800 hover:bg-slate-750 border border-slate-700 text-teal-400 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  <FileDown className="w-4 h-4 text-teal-400" />
-                  <span>Export Schema</span>
-                </button>
-              </>
-            ) : (
-              <button
-                type="button"
-                onClick={handleOpenCreateCond}
-                className="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-              >
-                <Plus className="w-4 h-4 text-slate-950 stroke-[2.5]" />
-                <span>Register Sickness / Condition</span>
-              </button>
-            )}
-          </div>
+      {/* Section switcher and actions */}
+      <div className="flex flex-col lg:flex-row lg:items-center gap-3">
+        <div className="flex-1">
+          <SubTabs
+            label="Diagnosis reference sections"
+            active={activeSubTab}
+            onChange={(id) => { setActiveSubTab(id); playBeep(); }}
+            tabs={[
+              { id: 'conditions', label: 'Conditions & care guidance', icon: Activity },
+              { id: 'codes', label: 'Billing codes (CPT/HCPCS)', icon: Database },
+            ]}
+          />
         </div>
-      </div>
-
-      {/* HORIZONTAL MULTI-VIEW TAB NAVIGATION */}
-      <div className="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 gap-1 sm:max-w-md text-left">
-        <button
-          type="button"
-          onClick={() => { setActiveSubTab('conditions'); playBeep(); }}
-          className={`flex-1 py-2 px-3 text-[11px] font-black rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 select-none ${
-            activeSubTab === 'conditions'
-              ? 'bg-slate-900 border border-slate-950 text-white shadow-sm font-extrabold'
-              : 'text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          <Activity className="w-3.5 h-3.5 text-emerald-500" />
-          <span>Sickness & Conditions Advisory</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => { setActiveSubTab('codes'); playBeep(); }}
-          className={`flex-1 py-2 px-3 text-[11px] font-black rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 select-none ${
-            activeSubTab === 'codes'
-              ? 'bg-slate-900 border border-slate-950 text-white shadow-sm font-extrabold'
-              : 'text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          <Database className="w-3.5 h-3.5 text-teal-500" />
-          <span>Codes Registry Admin</span>
-        </button>
+        <div className="flex flex-wrap gap-2">
+          {activeSubTab === 'codes' ? (
+            <>
+              <button type="button" onClick={() => setIsFormOpen(true)} className="px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs rounded-lg flex items-center gap-1.5 cursor-pointer">
+                <Plus className="w-4 h-4" /> Add code
+              </button>
+              <button type="button" onClick={handleExportCodes} className="px-3 py-2 border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold text-xs rounded-lg flex items-center gap-1.5 cursor-pointer">
+                <FileDown className="w-4 h-4" /> Export codes
+              </button>
+            </>
+          ) : (
+            <button type="button" onClick={handleOpenCreateCond} className="px-3 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs rounded-lg flex items-center gap-1.5 cursor-pointer">
+              <Plus className="w-4 h-4" /> Add condition
+            </button>
+          )}
+        </div>
       </div>
 
       {/* MAIN VIEW PANELS */}
@@ -1044,7 +995,7 @@ export default function DiagnosticDatabase({
               <div>
                 <h3 className="text-sm font-black text-slate-900 flex items-center gap-1.5">
                   <Activity className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Clinical Symptom Vector Matcher & Advisor</span>
+                  <span>Symptom matcher</span>
                 </h3>
                 <p className="text-[11px] text-slate-500 mt-0.5">Toggle reported indicators to calculate analytical diagnostic probability, safe medications, and and after-care instructions.</p>
               </div>
@@ -1263,6 +1214,7 @@ export default function DiagnosticDatabase({
                         </div>
                       </div>
 
+                      {expandedConds.includes(cond.id) && (<>
                       {/* Accuracy Score Indicator */}
                       <div className="space-y-1.5 bg-slate-50 p-3 rounded-xl border border-slate-150 text-xs">
                         <div className="flex justify-between items-center text-[11px] text-slate-650">
@@ -1279,6 +1231,7 @@ export default function DiagnosticDatabase({
                           />
                         </div>
                       </div>
+                      </>)}
 
                       {/* Symptoms collection */}
                       <div className="space-y-1 text-left">
@@ -1299,6 +1252,7 @@ export default function DiagnosticDatabase({
                         </div>
                       </div>
 
+                      {expandedConds.includes(cond.id) && (<>
                       {/* Appropriate Medications to acquire */}
                       <div className="space-y-1.5 text-left">
                         <span className="text-[10px] text-slate-450 uppercase font-black tracking-wider block flex items-center gap-1 selection:none">
@@ -1348,6 +1302,15 @@ export default function DiagnosticDatabase({
                       <div className="text-[9.5px] font-mono text-slate-400 text-right pt-1 select-none">
                         Dossier validated: {cond.lastUpdated}
                       </div>
+                      </>)}
+                      <button
+                        type="button"
+                        onClick={() => setExpandedConds(prev => prev.includes(cond.id) ? prev.filter(x => x !== cond.id) : [...prev, cond.id])}
+                        aria-expanded={expandedConds.includes(cond.id)}
+                        className="text-xs font-semibold text-teal-700 hover:text-teal-900 cursor-pointer"
+                      >
+                        {expandedConds.includes(cond.id) ? 'Hide details' : 'Show medications, warnings & after-care'}
+                      </button>
 
                     </div>
                   );

@@ -638,7 +638,7 @@ export default function PatientPortal({
 
             {appointments.length === 0 ? (
               <div className="bg-slate-50 rounded-2xl p-6 text-center text-xs text-slate-400 font-medium">
-                No proposed appointments pending Response for this patient. Proposals can be dispatched from the "Visitation Overview" panels.
+                No proposed appointments pending Response for this patient. Proposals can be dispatched from Visits & notes.
               </div>
             ) : (
               <div className="space-y-4">

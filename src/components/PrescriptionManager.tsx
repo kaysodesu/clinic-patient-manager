@@ -292,7 +292,7 @@ export default function PrescriptionManager({
               <Stethoscope className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-[10px] uppercase tracking-wider text-teal-400 font-mono font-black">ACTIVE DOSSIER PROFILE</span>
+              <span className="text-[10px] uppercase tracking-wider text-teal-400 font-mono font-black">Patient</span>
               <h3 className="text-sm font-bold truncate">{activePatient?.personalInfo?.firstName || ''} {activePatient?.personalInfo?.lastName || ''}</h3>
             </div>
           </div>
@@ -314,7 +314,7 @@ export default function PrescriptionManager({
 
           {/* Quick select patient switcher */}
           <div className="mt-4 pt-4 border-t border-slate-800">
-            <label className="block text-[10px] uppercase font-mono tracking-wider text-slate-500 mb-1.5">Switch Patient Dossier</label>
+            <label className="block text-[10px] uppercase font-mono tracking-wider text-slate-500 mb-1.5">Switch patient</label>
             <select
               value={selectedPatientId}
               onChange={(e) => onSelectPatient(e.target.value)}
@@ -408,7 +408,7 @@ export default function PrescriptionManager({
             >
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-base font-bold text-teal-300">Prescribe New Patient Medication</h3>
+                  <h3 className="text-base font-bold text-teal-300">Prescribe a medication</h3>
                   <p className="text-xs text-teal-400/80">Authorize and log a new pharmaceutical ledger for {activePatient?.personalInfo?.firstName || ''} {activePatient?.personalInfo?.lastName || ''}.</p>
                 </div>
                 <button
@@ -523,7 +523,7 @@ export default function PrescriptionManager({
                     type="submit"
                     className="bg-teal-550 hover:bg-teal-500 text-white font-bold py-2 px-5 rounded-xl text-xs cursor-pointer transition-all"
                   >
-                    Commit Active Authorization
+                    Save prescription
                   </button>
                 </div>
               </form>
@@ -535,7 +535,7 @@ export default function PrescriptionManager({
         {!selectedRx ? (
           <div className="bg-white border border-slate-150 rounded-2xl p-12 text-center shadow-xs">
             <Stethoscope className="w-14 h-14 text-slate-300 mx-auto mb-3" />
-            <h4 className="text-base font-bold text-slate-850">Individual Prescription Worksheet</h4>
+            <h4 className="text-base font-bold text-slate-850">Prescription details</h4>
             <p className="text-xs text-slate-450 mt-1.5 max-w-md mx-auto">
               Please select an active drug allocation from the inventory ledger on the left to review instructions, manage pharmacy updates, trace client calls, and track side effects.
             </p>

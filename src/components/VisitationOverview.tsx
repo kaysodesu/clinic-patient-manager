@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PatientSwitcher from './ui/PatientSwitcher';
 import { Patient, VisitationRecord, ClinicRole, ProgressLogNote, ProgressLogComment, ClinicalAttachment, PatientTransfer, PatientAvailability, PatientAppointment, AppointmentOption } from '../types';
 import { clinicalCodes, ClinicalCode } from '../data/clinicalCodes';
 import { motion, AnimatePresence } from 'motion/react';
@@ -792,43 +793,7 @@ export default function VisitationOverview({
   return (
     <div id="visitation-overview-panel" className="space-y-6">
       
-      {/* HEADER HERO ACCENT card */}
-      <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800 text-white relative overflow-hidden shadow-xs">
-        <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute left-1/3 bottom-0 w-48 h-48 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
-        
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2">
-              <span className="p-1 px-2.5 rounded-full bg-teal-500/20 text-teal-400 font-mono text-[9px] uppercase font-bold tracking-wider">
-                Clinical Workflow Module
-              </span>
-            </div>
-            <h1 className="text-xl md:text-2xl font-black tracking-tight text-white flex items-center gap-2">
-              <Stethoscope className="w-6 h-6 text-teal-400 shrink-0" />
-              Visitation Overview & Clinical Notes
-            </h1>
-            <p className="text-xs text-slate-400 leading-relaxed max-w-2xl font-sans">
-              Formulate, audit, and commit comprehensive summaries for patient encounters. Associate verified CPT1 / HCPCS codes under the Social Security Act §1877 regulations.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2 bg-slate-850 p-2 border border-slate-800 rounded-lg">
-            <label className="text-[10px] uppercase font-bold text-slate-400 block whitespace-nowrap">Select Case Dossier:</label>
-            <select
-              value={selectedPatientId}
-              onChange={(e) => onSelectPatient(e.target.value)}
-              className="bg-slate-900 border border-slate-700 rounded px-2.5 py-1 text-xs text-teal-300 font-semibold focus:ring-1 focus:ring-teal-500 focus:outline-none cursor-pointer"
-            >
-              {patients.map(p => (
-                <option key={p.id} value={p.id}>
-                  {p.personalInfo.lastName}, {p.personalInfo.firstName} ({p.id})
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </div>
+      <PatientSwitcher patients={patients} selectedId={selectedPatientId} onSelect={onSelectPatient} />
 
       {/* SUB-TAB CONTROL RAIL */}
       <div className="flex flex-wrap bg-slate-100 p-1 rounded-xl border border-slate-200 gap-1 select-none font-sans">
@@ -854,7 +819,7 @@ export default function VisitationOverview({
           }`}
         >
           <FileText className="w-4 h-4 shrink-0 text-amber-500" />
-          Progressive Clinical Logs
+          Progress notes
         </button>
         <button
           type="button"
@@ -866,7 +831,7 @@ export default function VisitationOverview({
           }`}
         >
           <Truck className="w-4 h-4 shrink-0 text-indigo-500" />
-          Patient Transfer Desk
+          Transfers
         </button>
         <button
           type="button"
@@ -891,7 +856,7 @@ export default function VisitationOverview({
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <h3 className="text-xs uppercase font-extrabold text-slate-900 tracking-wider flex items-center gap-2">
                 <User className="w-4 h-4 text-slate-500" />
-                Selected Case File
+                Patient summary
               </h3>
               <span className="font-mono text-xs font-black text-slate-450 bg-slate-100 px-2.5 py-0.5 rounded-full">{activePatient?.id}</span>
             </div>
@@ -977,7 +942,7 @@ export default function VisitationOverview({
                   <div>
                     <h3 className="text-sm font-extrabold text-slate-900 tracking-tight flex items-center gap-1.5">
                       <FileText className="w-4 h-4 text-teal-500" />
-                      Formulate Encounter Report & Diagnostic Coding
+                      Encounter note & coding
                     </h3>
                     <p className="text-xs text-slate-500 font-sans">Pre-populated and editable clinically compliant report lines</p>
                   </div>
@@ -1182,7 +1147,7 @@ export default function VisitationOverview({
                     className="w-full py-2.5 bg-teal-600 hover:bg-teal-550 active:bg-teal-700 text-white font-extrabold rounded-lg text-xs transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <CheckCircle2 className="w-4 h-4" />
-                    Commit Visitation Report to Patient Dossier & Close Visit
+                    Save visit & close
                   </button>
                 </div>
               </form>
@@ -1451,7 +1416,7 @@ export default function VisitationOverview({
 
               {/* PROGRESS LOGS ACCORDIAN LEDGER */}
               <div className="space-y-4">
-                <h3 className="text-xs uppercase font-extrabold text-slate-900 tracking-wider">Clinician Progressive Log Records</h3>
+                <h3 className="text-xs uppercase font-extrabold text-slate-900 tracking-wider">Progress notes</h3>
                 
                 {progressNotes.filter(n => n.patientId === activePatient?.id).length === 0 ? (
                   <div className="bg-slate-50 border border-dashed border-slate-200 rounded-xl p-8 text-center text-slate-500 italic text-xs">
@@ -1489,7 +1454,7 @@ export default function VisitationOverview({
                             type="button"
                             onClick={() => handleDeleteProgressNote(note.id)}
                             className="p-1.5 text-slate-400 hover:text-rose-600 rounded-md transition-colors border border-slate-100 hover:bg-rose-50 cursor-pointer"
-                            title="Expunge observation records"
+                            title="Delete this note"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -2459,7 +2424,7 @@ export default function VisitationOverview({
           <div>
             <h3 className="text-sm font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
               <Clipboard className="w-4 h-4 text-emerald-500" />
-              Electronic Encounter Records & History Logs ({displayedRecords.length})
+              Visit history ({displayedRecords.length})
             </h3>
             <p className="text-xs text-slate-500">Chronological list of patient and physician diagnostics</p>
           </div>
@@ -2603,7 +2568,7 @@ export default function VisitationOverview({
                     title="Delete record"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
-                    Expunge
+                    Delete
                   </button>
                 </div>
 
@@ -2677,7 +2642,7 @@ CONFIDENTIALITY NOTE: This document contains Protected Health Information (PHI) 
                       <Stethoscope className="w-5 h-5" />
                     </div>
                     <div className="text-left">
-                      <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-tight">Clinical Encounter Dossier</h3>
+                      <h3 className="text-sm font-extrabold text-slate-800 uppercase tracking-tight">Encounter summary</h3>
                       <p className="text-[10px] text-slate-500 font-mono">Reference ID: {selectedPreviewRecord.id} | Certified Health Ledger</p>
                     </div>
                   </div>
