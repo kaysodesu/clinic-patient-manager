@@ -120,3 +120,6 @@ On **Patients**, **Load Test Patients** adds five fictional scenarios (annual ph
 ## License
 
 Commercial license, see [LICENSE.md](LICENSE.md). Medical codes and guidance are reference material only. Verify codes against the licensed CPT®, HCPCS and ICD-10-CM code books before billing. CPT® is a registered trademark of the American Medical Association.
+
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/T5N72AQZSL)
