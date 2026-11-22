@@ -5,7 +5,7 @@ export const BRAND = {
   /** Short line under the facility name in the sidebar. */
   tagline: 'Family Practice',
   /** Product name shown on the sign-in screen. */
-  productName: 'Clinic Patient Manager',
+  productName: 'Clinic Patient Dashboard',
   /** Credit line in the sidebar. Set to '' to hide it. */
   developerCredit: 'Developed by Cason Point Network',
   /** Address line used on printed after-visit summaries and settings. */

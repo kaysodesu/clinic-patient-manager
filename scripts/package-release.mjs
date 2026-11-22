@@ -1,4 +1,4 @@
-// Creates the zip you upload to Gumroad: release/clinic-patient-manager-v<version>.zip
+// Creates the zip you upload to Gumroad: release/clinic-patient-dashboard-v<version>.zip
 // It packages exactly what is committed to git (never node_modules, dist, .env or local files).
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, statSync } from 'node:fs';

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Double-click (Mac: right-click > Open the first time) or run: ./start-mac-linux.sh
 cd "$(dirname "$0")"
-echo "Clinic Patient Manager"
+echo "Clinic Patient Dashboard"
 if ! command -v node >/dev/null 2>&1; then
   echo "Node.js is not installed. Install the LTS version from https://nodejs.org/ and run this again."
   (open https://nodejs.org/ || xdg-open https://nodejs.org/) >/dev/null 2>&1

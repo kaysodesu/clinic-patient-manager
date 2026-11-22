@@ -2,7 +2,7 @@
 # Render asks for the values marked "sync: false"; SESSION_SECRET is generated for you.
 services:
   - type: web
-    name: clinic-patient-manager
+    name: clinic-patient-dashboard
     runtime: node
     plan: free
     buildCommand: npm ci && npm run build

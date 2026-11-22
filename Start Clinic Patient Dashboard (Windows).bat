@@ -1,8 +1,8 @@
 @echo off
-title Clinic Patient Manager
+title Clinic Patient Dashboard
 cd /d "%~dp0"
 echo.
-echo  Clinic Patient Manager
+echo  Clinic Patient Dashboard
 echo  ----------------------
 where node >nul 2>nul
 if errorlevel 1 (

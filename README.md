@@ -1,4 +1,4 @@
-# Clinic Patient Manager
+# Clinic Patient Dashboard
 
 A full-stack starter for clinics and private practices: patient intake, records, visits with current ICD-10 / CPT coding, prescriptions, billing, secure records, patient communications, and staff accounts with roles. Built with React 19, TypeScript, Vite, Tailwind CSS 4, Express and Postgres.
 
@@ -34,7 +34,7 @@ Skip the first months of building a practice-management app and start from a wor
 
 ### Easiest: double-click the launcher
 1. Install **Node.js LTS** from https://nodejs.org (one time).
-2. Unzip this folder and double-click **`Start Clinic Patient Manager (Windows).bat`**. On Mac or Linux, run `start-mac-linux.sh`.
+2. Unzip this folder and double-click **`Start Clinic Patient Dashboard (Windows).bat`**. On Mac or Linux, run `start-mac-linux.sh`.
 3. The first run installs everything (a few minutes). Then your browser opens at http://localhost:3000. Keep the black window open while you use the app, and close it to stop.
 
 ### Or from a terminal

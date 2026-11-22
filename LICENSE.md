@@ -1,8 +1,8 @@
-# Clinic Patient Manager: Commercial License
+# Clinic Patient Dashboard: Commercial License
 
 Copyright © 2026 Cason Point Network. All rights reserved.
 
-This license applies to everyone who buys Clinic Patient Manager (the "Product"). Your purchase receipt states which tier you bought.
+This license applies to everyone who buys Clinic Patient Dashboard (the "Product"). Your purchase receipt states which tier you bought.
 
 ## Personal License
 You may:

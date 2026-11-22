@@ -1,6 +1,6 @@
 # Security and HIPAA notes
 
-Clinic Patient Manager is a **starter codebase**. It gives you working features and sensible security basics, but **it is not a HIPAA-compliant system out of the box**, and buying it does not make your deployment compliant. Compliance depends on how you host, configure, operate and document your system.
+Clinic Patient Dashboard is a **starter codebase**. It gives you working features and sensible security basics, but **it is not a HIPAA-compliant system out of the box**, and buying it does not make your deployment compliant. Compliance depends on how you host, configure, operate and document your system.
 
 ## What's already in place
 - Staff sign-in with individual accounts; no shared passwords.

@@ -118,7 +118,7 @@ export default function AdminLockGate({
           subtitle: 'Requires Level 2 Access (Team Lead) to unlock',
           accent: 'bg-rose-500',
           textAccent: 'text-rose-400',
-          desc: 'You have performed 5 edits to the clinic patient manager. To restore clinician editing permission, you must unlock with the Level 2 code (2222) or Level 3 code (3333).',
+          desc: 'You have performed 5 edits to the Clinic Patient Dashboard. To restore clinician editing permission, you must unlock with the Level 2 code (2222) or Level 3 code (3333).',
           badge: 'Level 2/3 Code Needed'
         };
       } else {

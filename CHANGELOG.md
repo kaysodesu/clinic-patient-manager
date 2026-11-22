@@ -1,4 +1,9 @@
 # Changelog
+## 1.2.1 (2026-11-22)
+
+### Changed
+- **Renamed to Clinic Patient Dashboard** everywhere: app title, sign-in screen, docs, license, launcher (`Start Clinic Patient Dashboard (Windows).bat`), package name and release zip (`clinic-patient-dashboard-v<version>.zip`). Saved data and settings carry over unchanged.
+
 
 ## 1.2.0 (2026-11-22)
 
