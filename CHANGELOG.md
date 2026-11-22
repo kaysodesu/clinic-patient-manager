@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.2.0 (2026-11-22)
+
+Easier to open, and a public demo you can share.
+
+### Added
+- **Double-click launchers:** `Start Clinic Patient Manager (Windows).bat` and `start-mac-linux.sh` check for Node.js, install on first run, start the app and open the browser. This fixes "nothing happens when I open the files."
+- **Public demo mode** (`npm run build:demo`):
+  - a 20-minute free preview per browser, with a countdown bar;
+  - "Join Discord for perks" and "Get the full version" buttons;
+  - a lock screen when time runs out, offering *Request extended access*, *Get the full version* and an access-code box that unlocks for 7 days (codes stored as SHA-256 hashes);
+  - visitors can add their **own Gemini key**, kept in their browser, to run the AI auditor, with friendly error messages.
+  - All settings are in `src/config/demo.ts`.
+- `npm run publish:demo`: rebuilds the demo and publishes only the compiled site (no source) to a public GitHub Pages repo.
+
+### Changed
+- The AI auditor's reviewer prompts moved to `src/shared/auditPrompts.ts`, so the server and the demo use the same ones.
+- The old amber demo banner was replaced by the new preview bar.
+
 ## 1.1.0 (2026-11-16)
 
 Cleaner, faster layout for busy clinicians.
