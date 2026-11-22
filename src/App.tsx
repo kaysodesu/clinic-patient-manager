@@ -389,7 +389,6 @@ export default function App() {
     if (patients.length === 0) handleLoadBetaTestPatients(true);
   }, [patientsLoading]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Used by the tutorials to open a screen
   // Menu navigation (desktop sidebar and mobile drawer)
   const goTo = (id: ViewId) => {
     setMobileMenuOpen(false);
@@ -402,6 +401,7 @@ export default function App() {
     ...(quotaLockedOut ? ['visitation' as ViewId, 'intake' as ViewId] : []),
   ];
 
+  // Used by the tutorials to open a screen
   const navigateToSection = (section: AppSection) => {
     setMobileMenuOpen(false);
     if (section === 'feedback') { setActiveView('marketing'); setMarketingTabSource('feedback'); return; }
@@ -567,11 +567,6 @@ export default function App() {
 
   return (
     <>
-    {DEMO_MODE && (
-      <div className="bg-amber-400 text-amber-950 text-[11px] font-bold text-center py-1 px-4" style={{ paddingTop: 'calc(4px + env(safe-area-inset-top, 0px))' }}>
-        Demo mode: fictional patients only. Your changes stay in this browser.
-      </div>
-    )}
     <div 
       className="min-h-screen bg-slate-50 text-slate-800 flex flex-col md:flex-row font-sans transition-all duration-300"
       style={{ filter: `brightness(${appBrightness}%)` }}

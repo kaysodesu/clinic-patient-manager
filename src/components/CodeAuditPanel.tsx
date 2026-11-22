@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { getBrowserAiKey, openAiKeyDialog, runAuditInBrowser } from '../demo/browserAi';
+import { DEFAULT_AUDIT_MODEL } from '../shared/auditPrompts';
+
+const IS_DEMO = import.meta.env.VITE_DEMO_MODE === 'true';
 import { BRAND } from '../config/brand';
 import { 
   Building2, ShieldCheck, Palette, Settings2, Code, Terminal, 
@@ -207,6 +211,16 @@ export default function CodeAuditPanel({ onLogITEvent, playBeep }: CodeAuditPane
     setAuditResult(null);
 
     try {
+      if (IS_DEMO) {
+        // Public demo: no server, so use the visitor's own key straight from the browser
+        if (!getBrowserAiKey()) {
+          openAiKeyDialog();
+          throw new Error('Add your own Gemini API key to run a review (the "Add AI key" button at the top). It stays in your browser.');
+        }
+        setAuditResult(await runAuditInBrowser({ persona: selectedPersona, customSystemInstruction: selectedPersona === 'custom' ? customInstruction : undefined, codeSnippet: codeContent, targetContext }));
+        if (playBeep) playBeep();
+        return;
+      }
       const response = await fetch('/api/audit-code', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -215,7 +229,7 @@ export default function CodeAuditPanel({ onLogITEvent, playBeep }: CodeAuditPane
           customSystemInstruction: selectedPersona === 'custom' ? customInstruction : undefined,
           codeSnippet: codeContent,
           targetContext: targetContext,
-          modelName: 'gemini-3.6-flash'
+          modelName: DEFAULT_AUDIT_MODEL
         })
       });
 
@@ -271,7 +285,7 @@ export default function CodeAuditPanel({ onLogITEvent, playBeep }: CodeAuditPane
       
       {/* Page action */}
       <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 flex flex-wrap items-center gap-3">
-        <p className="text-xs text-slate-600 flex-1 min-w-[200px]">Pick a reviewer, paste code or a prompt, then run the review. Uses the AI key set in Setup &amp; integrations.</p>
+        <p className="text-xs text-slate-600 flex-1 min-w-[200px]">Pick a reviewer, paste code or a prompt, then run the review. {IS_DEMO ? 'Uses your own AI key (top bar).' : 'Uses the AI key set in Setup & integrations.'}</p>
         <button
           type="button"
           onClick={handleRunAudit}

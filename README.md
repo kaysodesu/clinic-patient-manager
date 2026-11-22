@@ -4,6 +4,8 @@ A full-stack starter for clinics and private practices: patient intake, records,
 
 Skip the first months of building a practice-management app and start from a working, rebrandable product.
 
+**Live demo (20-minute free preview):** https://kaysodesu.github.io/Clinic-Patient-Dashboard/
+
 > **Important:** this is a starting point, not a certified medical records system. It is **not HIPAA compliant out of the box.** Read [docs/SECURITY-AND-HIPAA.md](docs/SECURITY-AND-HIPAA.md) before storing real patient information.
 
 ---
@@ -28,6 +30,14 @@ Skip the first months of building a practice-management app and start from a wor
 
 ## Quick start
 
+> **Why doesn't double-clicking `index.html` work?** This is a web *app* with its own server, not a single web page. It has to be started with Node.js first, then opened in your browser at http://localhost:3000. The launcher below does that for you.
+
+### Easiest: double-click the launcher
+1. Install **Node.js LTS** from https://nodejs.org (one time).
+2. Unzip this folder and double-click **`Start Clinic Patient Manager (Windows).bat`**. On Mac or Linux, run `start-mac-linux.sh`.
+3. The first run installs everything (a few minutes). Then your browser opens at http://localhost:3000. Keep the black window open while you use the app, and close it to stop.
+
+### Or from a terminal
 **Requirements:** Node.js 20 or newer.
 
 ```bash
@@ -50,6 +60,19 @@ Without `DATABASE_URL` everything is kept in memory, which is fine for trying it
 | `npm run build:demo` | Server-free demo build in `dist-demo/` (data stays in the visitor's browser, roles switchable) |
 | `npm run lint` | TypeScript type check |
 | `npm run package` | Create a clean release zip in `release/` |
+| `npm run publish:demo` | Rebuild the public demo and publish **only the compiled site** to the demo repo's GitHub Pages (see below) |
+
+## Public demo (optional)
+
+`npm run build:demo` makes a server-free version for sharing. It:
+- loads fictional patients, keeps all changes in the visitor's own browser, and lets visitors switch roles;
+- shows a **free preview timer** (20 minutes by default) with buttons to your store and community;
+- after the preview ends, offers **Request extended access** (your Discord), **Get the full version** (your store), and an **access-code** box (each code unlocks that browser for 7 days);
+- lets visitors add **their own Gemini key** for the AI auditor. The key stays in their browser and goes straight to Google.
+
+Change the timer, links and access codes in `src/config/demo.ts`. Codes are stored only as SHA-256 hashes, and the file shows the one-line command to make new ones. The timer is a soft limit kept in the browser that keeps casual visitors to a preview. It is not security, so never put real patient data in a demo.
+
+To host it, set `DEMO_REPO` (default `kaysodesu/Clinic-Patient-Dashboard`) to a public repo you own, run `npm run publish:demo`, then turn on GitHub Pages for that repo (Settings → Pages → Deploy from branch → `main`, root).
 
 ## Configuration
 

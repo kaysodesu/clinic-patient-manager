@@ -1,7 +1,7 @@
 {
   "name": "clinic-patient-manager",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
@@ -10,7 +10,8 @@
     "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
     "lint": "tsc --noEmit",
     "build:demo": "vite build --mode demo --base ./ --outDir dist-demo",
-    "package": "node scripts/package-release.mjs"
+    "package": "node scripts/package-release.mjs",
+    "publish:demo": "node scripts/publish-demo.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
